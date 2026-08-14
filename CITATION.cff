@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+title: "Compress and Forget: bitsandbytes Quantization Amplifies Proactive Interference in LLMs"
+message: "If you use this repository, please cite the associated paper."
+type: software
+authors:
+  - family-names: Shahrabi-Farahani
+    given-names: Shayan
+  - family-names: Rahmati
+    given-names: Dara
+institution: Shahid Beheshti University
+date-released: 2026-08-13
+license: MIT
+repository-code: "https://github.com/YOUR-USERNAME/pi-llm-quantization"

@@ -1,0 +1,120 @@
+==============================================================================
+PART 1: Effect sizes (odds ratios, FP16 vs INT4) with 95% CIs
+==============================================================================
+
+qwen2.5-7b (level=64, n=300 per arm):
+  FP16 accuracy: 0.810   INT4 accuracy: 0.683
+  Odds ratio (FP16 vs INT4): 1.976  95% CI [1.355, 2.881]
+  Fisher exact p-value: 0.0004911
+
+mistral-7b (level=16, n=1200 per arm):
+  FP16 accuracy: 0.440   INT4 accuracy: 0.374
+  Odds ratio (FP16 vs INT4): 1.314  95% CI [1.116, 1.547]
+  Fisher exact p-value: 0.001187
+
+phi3.5-mini (level=8, n=500 per arm):
+  FP16 accuracy: 0.618   INT4 accuracy: 0.540
+  Odds ratio (FP16 vs INT4): 1.378  95% CI [1.071, 1.773]
+  Fisher exact p-value: 0.01489
+
+Pooled (Mantel-Haenszel) across all 3 models:
+  Common odds ratio: 1.396  95% CI [1.228, 1.588]
+  MH test statistic: 25.967, p-value: 3.47e-07
+
+==============================================================================
+PART 2: Mixed-effects logistic regression -- word-type attributes (main hypothesis)
+==============================================================================
+Model: correct ~ quant_mode * log2(interference_level)
+Random intercepts: model, seed, attribute
+(Uses ALL interference levels simultaneously -- no per-model level selection.)
+
+Term                                                        Coef      SD      OR             95% CI       z         p
+Intercept                                                  3.651   0.019  38.515 [37.126, 39.956]  194.78         0
+C(quant_mode, Treatment("fp16"))[T.int8]                  -0.256   0.032   0.774 [0.726, 0.824]   -7.93  2.22e-15
+C(quant_mode, Treatment("fp16"))[T.int4]                  -0.143   0.032   0.867 [0.813, 0.923]   -4.44  9.14e-06
+log2_level                                                -1.236   0.005   0.291 [0.288, 0.293] -251.16         0
+C(quant_mode, Treatment("fp16"))[T.int8]:log2_level        0.023   0.009   1.024 [1.007, 1.041]    2.73   0.00633
+C(quant_mode, Treatment("fp16"))[T.int4]:log2_level       -0.046   0.008   0.955 [0.939, 0.971]   -5.43  5.71e-08
+
+Interpretation guide:
+  - The 'int4:log2_level' interaction term is the key test: a negative,
+    significant coefficient means the INT4 accuracy penalty (relative to
+    FP16) GROWS as interference level increases -- i.e. quantization
+    specifically hurts retrieval more under heavier interference, using
+    the full dataset rather than a single hand-picked level per model.
+  - The 'int8:log2_level' interaction term is the same test for INT8,
+    expected to be small/non-significant given the 'cliff at INT4' pattern.
+
+==============================================================================
+PART 2: Mixed-effects logistic regression -- numeric attributes (specificity control)
+==============================================================================
+Model: correct ~ quant_mode * log2(interference_level)
+Random intercepts: model, seed, attribute
+(Uses ALL interference levels simultaneously -- no per-model level selection.)
+
+Term                                                        Coef      SD      OR             95% CI       z         p
+Intercept                                                  3.909   0.015  49.828 [48.422, 51.276]  267.58         0
+C(quant_mode, Treatment("fp16"))[T.int8]                  -0.213   0.025   0.808 [0.770, 0.849]   -8.52         0
+C(quant_mode, Treatment("fp16"))[T.int4]                  -0.190   0.025   0.827 [0.787, 0.869]   -7.45  9.19e-14
+log2_level                                                -0.626   0.003   0.535 [0.532, 0.537] -229.19         0
+C(quant_mode, Treatment("fp16"))[T.int8]:log2_level        0.013   0.005   1.013 [1.004, 1.023]    2.81   0.00494
+C(quant_mode, Treatment("fp16"))[T.int4]:log2_level        0.053   0.005   1.054 [1.044, 1.064]   11.05         0
+
+Interpretation guide:
+  - The 'int4:log2_level' interaction term is the key test: a negative,
+    significant coefficient means the INT4 accuracy penalty (relative to
+    FP16) GROWS as interference level increases -- i.e. quantization
+    specifically hurts retrieval more under heavier interference, using
+    the full dataset rather than a single hand-picked level per model.
+  - The 'int8:log2_level' interaction term is the same test for INT8,
+    expected to be small/non-significant given the 'cliff at INT4' pattern.
+
+==============================================================================
+PART 2: Mixed-effects logistic regression -- word-type attributes (main hypothesis) (random-slopes robustness variant)
+==============================================================================
+Model: correct ~ quant_mode * log2(interference_level)
+Random intercepts: model, seed, attribute
+Random slopes: log2(interference_level) by model, by attribute
+(Uses ALL interference levels simultaneously -- no per-model level selection.)
+
+Term                                                        Coef      SD      OR             95% CI       z         p
+Intercept                                                  4.035   0.019  56.557 [54.508, 58.684]  214.26         0
+C(quant_mode, Treatment("fp16"))[T.int8]                  -0.253   0.032   0.777 [0.729, 0.828]   -7.78  7.33e-15
+C(quant_mode, Treatment("fp16"))[T.int4]                  -0.140   0.032   0.870 [0.816, 0.927]   -4.31  1.66e-05
+log2_level                                                -1.181   0.005   0.307 [0.304, 0.310] -238.55         0
+C(quant_mode, Treatment("fp16"))[T.int8]:log2_level        0.022   0.009   1.022 [1.005, 1.039]    2.55    0.0107
+C(quant_mode, Treatment("fp16"))[T.int4]:log2_level       -0.048   0.009   0.953 [0.938, 0.969]   -5.62  1.95e-08
+
+Interpretation guide:
+  - The 'int4:log2_level' interaction term is the key test: a negative,
+    significant coefficient means the INT4 accuracy penalty (relative to
+    FP16) GROWS as interference level increases -- i.e. quantization
+    specifically hurts retrieval more under heavier interference, using
+    the full dataset rather than a single hand-picked level per model.
+  - The 'int8:log2_level' interaction term is the same test for INT8,
+    expected to be small/non-significant given the 'cliff at INT4' pattern.
+
+==============================================================================
+PART 2: Mixed-effects logistic regression -- numeric attributes (specificity control) (random-slopes robustness variant)
+==============================================================================
+Model: correct ~ quant_mode * log2(interference_level)
+Random intercepts: model, seed, attribute
+Random slopes: log2(interference_level) by model, by attribute
+(Uses ALL interference levels simultaneously -- no per-model level selection.)
+
+Term                                                        Coef      SD      OR             95% CI       z         p
+Intercept                                                  3.795   0.015  44.499 [43.211, 45.826]  253.26         0
+C(quant_mode, Treatment("fp16"))[T.int8]                  -0.175   0.026   0.840 [0.799, 0.883]   -6.82  9.25e-12
+C(quant_mode, Treatment("fp16"))[T.int4]                  -0.212   0.026   0.809 [0.769, 0.852]   -8.09  6.66e-16
+log2_level                                                -0.392   0.003   0.676 [0.672, 0.680] -136.59         0
+C(quant_mode, Treatment("fp16"))[T.int8]:log2_level        0.004   0.005   1.004 [0.995, 1.014]    0.89     0.374
+C(quant_mode, Treatment("fp16"))[T.int4]:log2_level        0.059   0.005   1.061 [1.051, 1.071]   11.83         0
+
+Interpretation guide:
+  - The 'int4:log2_level' interaction term is the key test: a negative,
+    significant coefficient means the INT4 accuracy penalty (relative to
+    FP16) GROWS as interference level increases -- i.e. quantization
+    specifically hurts retrieval more under heavier interference, using
+    the full dataset rather than a single hand-picked level per model.
+  - The 'int8:log2_level' interaction term is the same test for INT8,
+    expected to be small/non-significant given the 'cliff at INT4' pattern.

@@ -1,0 +1,13 @@
+model,interference_level,quant_mode,n_trials,accuracy,n_correct
+qwen2.5-7b,64,fp16,300,0.81,243
+qwen2.5-7b,64,int4,300,0.6833,205
+qwen2.5-7b,64,int4_forced_lmhead,300,0.68,204
+qwen2.5-7b,64,int8,300,0.8,240
+mistral-7b,16,fp16,1200,0.44,528
+mistral-7b,16,int4,1200,0.3742,449
+mistral-7b,16,int4_forced_lmhead,1200,0.3733,448
+mistral-7b,16,int8,1200,0.4225,507
+phi3.5-mini,8,fp16,500,0.618,309
+phi3.5-mini,8,int4,500,0.54,270
+phi3.5-mini,8,int4_forced_lmhead,500,0.54,270
+phi3.5-mini,8,int8,500,0.576,288

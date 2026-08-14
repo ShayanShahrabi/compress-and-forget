@@ -1,0 +1,12 @@
+# Main reproduction environment
+# CUDA-enabled PyTorch may need to be installed from the PyTorch index
+# appropriate for your system.
+torch==2.5.1
+transformers==5.12.1
+bitsandbytes==0.49.2
+accelerate
+pandas
+numpy
+scipy
+statsmodels
+matplotlib
