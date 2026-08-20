@@ -4,7 +4,6 @@ Official code and reproducibility artifacts for:
 
 > **Compress and Forget: bitsandbytes Quantization Amplifies Proactive Interference in LLMs**  
 > Shayan Shahrabi-Farahani, Dara Rahmati  
-> Shahid Beheshti University
 
 **Status:** research artifact for the current paper version. The main results use bitsandbytes FP16/INT8/INT4 (NF4).
 
