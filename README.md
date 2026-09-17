@@ -3,10 +3,6 @@
 Official code and reproducibility artifacts for:
 
 > **Compress and Forget: bitsandbytes Quantization Amplifies Proactive Interference in LLMs**  
-[> Shayan Shahrabi-Farahani, Dara Rahmati  
-
-**Status:** research artifact for [arXiv:2608.18578](https://arxiv.org/abs/2608.18578).]:#
-
 ---
 
 ## Overview
@@ -286,19 +282,6 @@ compute_dtype = float16
 ```
 
 No model weights are redistributed here; users should obtain the models from their respective official Hugging Face repositories and comply with their licenses.
-
-## Citation
-
-If you use this code or benchmark, please cite the paper:
-
-```bibtex
-@article{shahrabi2026compress,
-  title={Compress and Forget: bitsandbytes Quantization Amplifies Proactive Interference in LLMs},
-  author={Shahrabi-Farahani, Shayan and Rahmati, Dara},
-  journal={arXiv preprint arXiv:2608.18578},
-  year={2026}
-}
-```
 
 
 ## License
