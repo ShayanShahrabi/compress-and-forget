@@ -3,9 +3,9 @@
 Official code and reproducibility artifacts for:
 
 > **Compress and Forget: bitsandbytes Quantization Amplifies Proactive Interference in LLMs**  
-> Shayan Shahrabi-Farahani, Dara Rahmati  
+[> Shayan Shahrabi-Farahani, Dara Rahmati  
 
-**Status:** research artifact for [arXiv:2608.18578](https://arxiv.org/abs/2608.18578).
+**Status:** research artifact for [arXiv:2608.18578](https://arxiv.org/abs/2608.18578).]:#
 
 ---
 
