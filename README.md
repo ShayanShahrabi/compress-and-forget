@@ -25,39 +25,6 @@ The benchmark uses repeated key rebinding: an attribute is overwritten multiple 
 
 The experiment is paired at the trial level: for a fixed model and seed, FP16, INT8, and INT4 use the same generated trials. The released analysis therefore compares quantization conditions without item-difficulty variation as a confound.
 
-## Repository structure
-
-```text
-pi-llm-quantization/
-├── src/
-│   ├── pi_llm_eval_v2.py              # Main FP16/INT8/INT4 evaluator
-│   ├── reconstruct_trials.py          # Reconstructs deterministic trial sequences
-│   ├── combine_all_results.py        # Combines per-run CSV files
-│   ├── compute_ies.py                 # Interference Endurance Score
-│   ├── compute_numeric_token_lengths.py
-│   ├── effect_sizes_and_mixedmodel.py # Statistical analysis
-│   ├── make_plots.py                  # Paper figures
-│   └── lmhead_ablation/
-│       ├── run_lmhead_ablation_v2.py
-│       └── analyze_lmhead_ablation_v2.py
-│
-├── data/
-│   ├── combined_raw.csv.gz            # Released main trial-level results
-│   ├── reconstructed_trials.csv      # Deterministically reconstructed trials
-│   ├── numeric_token_lengths.csv     # Numeric token-length analysis
-│   ├── vocab_manifest_*.json         # Tokenizer-verified vocabularies
-│   └── ablation/                     # LM-head ablation results
-│
-├── results/
-│   ├── figures/                       # Figures used by the paper
-│   └── reports/                       # IES/statistical/ablation reports
-│
-├── requirements.txt
-├── CITATION.cff
-├── LICENSE
-└── README.md
-```
-
 ## Main experimental design
 
 The main task contains four word-type attributes:
