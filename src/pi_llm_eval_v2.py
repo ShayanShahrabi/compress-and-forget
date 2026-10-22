@@ -124,7 +124,7 @@ MOOD_CANDIDATES = [
     "patient", "determined", "uncertain", "satisfied", "regretful", "hurt",
     "thrilled", "terrified", "delighted", "puzzled", "hostile", "friendly",
     "distracted", "focused", "overwhelmed", "inspired", "numb", "vulnerable",
-    "guilty", "hopeless", "eager", "wistful", "serene", "tense", "giddy",
+    "guilty", "hopeless", "wistful", "serene", "tense", "giddy",
     "melancholy", "spiteful", "affectionate", "indifferent", "suspicious",
     "trusting", "resentful", "empowered", "helpless", "amazed", "startled",
 ]
