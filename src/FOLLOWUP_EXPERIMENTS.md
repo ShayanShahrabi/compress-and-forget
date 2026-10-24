@@ -1,5 +1,7 @@
 # Follow-up experiments: representation and sampled decoding
 
+**Historical runner guide.** Released pilot sampling records are now in `data/followup/sampling/`; representation manifests and compact cleaned summaries are also included. Raw geometry and centered-probe arrays are not included. Use `../docs/REPRODUCIBILITY.md` for current artifact status, revised analysis commands and evaluator/runtime discrepancies. The analyzer below is not the exact producer of the final cleaned manuscript geometry summary.
+
 These standalone experiments are designed for a CUDA Linux runtime such as the RTX 6000 Blackwell Molab environment. They do not modify `pi_llm_eval_v2.py` or the published paper. The scripts live in `src/` beside `pi_llm_eval_v2.py`; run commands from the repository root using the paths shown below. The actual model runs are GPU-intensive and should be run on Molab, not on the local development machine. For environments importing modules as a package, `src` may also be used as a package name.
 
 ## Protocol and outputs
@@ -19,7 +21,6 @@ Confirm the selected Molab runtime exposes the GPU to a shell, has enough persis
 Start with a small pilot for one model and five trials per semantic category:
 
 ```bash
-cd llms_inference
 python src/run_representational_followup.py --model mistral-7b --quant both --trials-per-category 5
 ```
 

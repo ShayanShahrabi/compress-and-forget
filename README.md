@@ -1,8 +1,8 @@
-# Compress and Forget: bitsandbytes Quantization Amplifies Proactive Interference in LLMs
+# Compress and Forget: Evaluating Quantized LLMs on Interference-Heavy Retrieval
 
 Official code and reproducibility artifacts for:
 
-> **Compress and Forget: bitsandbytes Quantization Amplifies Proactive Interference in LLMs**  
+> **Compress and Forget: Evaluating Quantized LLMs on Interference-Heavy Retrieval**
 ---
 
 ## Overview
@@ -40,11 +40,11 @@ and three numeric control attributes:
 - stock price
 - page count
 
-Interference levels are drawn from powers of two, with the maximum level determined by the available tokenizer-filtered vocabulary for each word-type attribute/model.
+The interference level `k` counts all chronological updates, including the final correct value; `k−1` values are stale. Tested levels are {1, 2, 4, 8, 16, 32, 64, 96}, subject to model/attribute vocabulary caps.
 
 Word-type candidates are filtered by checking their actual token spans in the filled prompt template. This avoids assuming that tokenization of a word in isolation is equivalent to tokenization of that word in context.
 
-Each condition uses five random seeds. Trial generation is deterministic for a fixed seed, and the same trial sequence is used across quantization levels.
+Each condition uses five random seeds. The released records contain 23,075 paired trial identities (69,225 precision-specific observations). Exact regeneration also depends on the ordered vocabulary and evaluator version: released manifests and available evaluator copies differ. Use the released reconstructed histories and matching manifests as replay references; see [reproducibility limits](docs/REPRODUCIBILITY.md).
 
 ## Installation
 
@@ -114,64 +114,35 @@ with the same task generator and paired trial design.
 
 Running the complete experiment requires substantial GPU time and disk space. The released `data/combined_raw.csv.gz` contains the corresponding trial-level results, so the paper's analyses can be reproduced without rerunning all model inference.
 
-## Reproducing the analyses
+## Reproducing the revised manuscript analyses
 
-From the repository root:
+Use the released `data/reconstructed_trials.csv`; do not overwrite it with a fresh evaluator replay. CPU analysis does not require model downloads. Install NumPy, pandas, SciPy, statsmodels and Matplotlib in your CPU environment (the full requirements also include GPU inference dependencies).
 
-### 1. Reconstruct trials
-
-```bash
-python src/reconstruct_trials.py
-```
-
-This creates:
-
-```text
-reconstructed_trials.csv
-```
-
-The reconstruction is used by the same-key intrusion analysis. The reconstructed subject/gold values should match the corresponding entries in the released raw results.
-
-### 2. Combine result files
-
-If you have generated per-condition result CSVs:
+From the repository root, choose fresh output directories:
 
 ```bash
-python src/combine_all_results.py
+python3 -I analysis/audit_primary.py --out generated/primary
 ```
-
-### 3. Compute IES
 
 ```bash
-python src/compute_ies.py
+python3 -I src/revision_stats.py --data data --out generated/statistics
 ```
-
-The Interference Endurance Score is computed from the existing trial-level accuracy curves using trapezoidal integration over a log2-scaled interference axis.
-
-### 4. Statistical analysis
 
 ```bash
-python src/effect_sizes_and_mixedmodel.py
+python3 -I analysis/build_figures.py --out generated/figures
 ```
 
-This contains the effect-size and mixed-effects analyses used for the paper.
-
-### 5. Generate paper figures
-
-Place/use `combined_raw.csv.gz` and `reconstructed_trials.csv` in the working directory and run:
+The audit checks complete pairing and primary summaries. `revision_stats.py` computes paired per-level gaps, exact McNemar tests, trial-clustered GEE, repeated-entry sensitivity and seed summaries. The figure builder produces five PDF/PNG figures and CSV companions; its geometry panel uses a **preserved cleaned summary**, not raw hidden-state re-extraction. References are in `analysis/verified/` and `analysis/figure-data/`.
 
 ```bash
-python src/make_plots.py
+python3 -I -B -m unittest discover -s src -p 'test_*cpu.py'
 ```
 
-The script generates:
+```bash
+python3 -I -B -m unittest discover -s src -p 'test_revision_stats.py'
+```
 
-- accuracy vs. interference level
-- numeric-control accuracy
-- key high-interference comparison
-- same-key intrusion rate
-
-in PDF and PNG formats.
+See [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md) for artifact provenance, comparison tolerances and limits. The historical `reconstruct_trials.py`, `combine_all_results.py`, `compute_ies.py`, `effect_sizes_and_mixedmodel.py` and `make_plots.py` remain available for inspection. Some expect input files in the working directory. They are not interchangeable with the revised paired statistics and cleaned geometry summaries; the older mixed-model analysis is not the revised primary inference.
 
 ## Exploratory follow-up code
 
@@ -183,11 +154,11 @@ The repository also includes the scripts and protocol for the paper's explorator
 - `src/test_followup_cpu.py`: CPU-only checks for shared manifest and prompt helpers.
 - `src/FOLLOWUP_EXPERIMENTS.md`: runtime requirements, commands, outputs, and interpretation caveats.
 
-Follow-up result CSVs are generated by running the scripts and are not included in this repository. The scripts write manifests and environment reports alongside outputs. Completion repeats are clustered within prompts; geometry results are descriptive and do not establish causal mediation. See the follow-up guide before running these exploratory experiments.
+The released pilot completion CSVs and manifests are now included under `data/followup/sampling/`. Representation manifests and a compact cleaned summary are included, but raw geometry CSVs and centered-probe NPZ arrays are not. The existing runners write manifests and environment reports for new runs; their presence does not prove exact historical regeneration. Completion repeats are clustered within prompts; geometry results are descriptive and do not establish causal mediation. See the follow-up guide before running these exploratory experiments.
 
 ## LM-head ablation
 
-The main INT4 loading path used by the project left the language-model head in full precision under the relevant bitsandbytes configuration. A follow-up experiment explicitly quantized the LM head to determine whether the observed INT4 penalty was attributable to the output projection.
+The main INT4 loading path used by the project left the language-model head in full precision under the relevant bitsandbytes configuration. A follow-up experiment explicitly quantized the LM head as a sensitivity check. Its small additional net accuracy changes do not establish equivalence or a causal decomposition of the INT4 penalty.
 
 The standalone V2 implementation is in:
 
@@ -231,7 +202,7 @@ as well as:
 - IES report
 - statistical analysis outputs
 
-This is intended to make the reported analyses reproducible without requiring every model inference run to be repeated.
+Primary paired statistics can be recomputed from released tables without repeating model inference. Follow-up audit summaries are preserved exports with the limitations described in the reproducibility guide; not every reported quantity has its exact historical producer or raw input available.
 
 ## Reproducibility notes
 

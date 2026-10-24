@@ -1,0 +1,105 @@
+{
+  "paired_trials": 23075,
+  "intrusion": {
+    "counts": {
+      "fp16": 2007,
+      "int4": 2297,
+      "int8": 2167
+    },
+    "rates": {
+      "fp16": 0.2146524064171123,
+      "int4": 0.24566844919786096,
+      "int8": 0.23176470588235293
+    },
+    "discordant": [
+      170,
+      460
+    ],
+    "odds_ratio": 0.3695652173913043,
+    "exact_p": 8.793084963953934e-32,
+    "or_ci": [
+      0.30810234970196143,
+      0.4415908193301273
+    ]
+  },
+  "key_levels": [
+    {
+      "model": "qwen2.5-7b",
+      "k": 64,
+      "quant": "int4",
+      "n": 300,
+      "fp16": 0.81,
+      "quant_accuracy": 0.6833333333333333,
+      "discordant": [
+        40,
+        2
+      ],
+      "exact_p": 4.1109160520136356e-10
+    },
+    {
+      "model": "qwen2.5-7b",
+      "k": 64,
+      "quant": "int8",
+      "n": 300,
+      "fp16": 0.81,
+      "quant_accuracy": 0.8,
+      "discordant": [
+        10,
+        7
+      ],
+      "exact_p": 0.629058837890625
+    },
+    {
+      "model": "mistral-7b",
+      "k": 16,
+      "quant": "int4",
+      "n": 1200,
+      "fp16": 0.44,
+      "quant_accuracy": 0.37416666666666665,
+      "discordant": [
+        129,
+        50
+      ],
+      "exact_p": 3.0975553418291926e-09
+    },
+    {
+      "model": "mistral-7b",
+      "k": 16,
+      "quant": "int8",
+      "n": 1200,
+      "fp16": 0.44,
+      "quant_accuracy": 0.4225,
+      "discordant": [
+        46,
+        25
+      ],
+      "exact_p": 0.01699465257343638
+    },
+    {
+      "model": "phi3.5-mini",
+      "k": 8,
+      "quant": "int4",
+      "n": 500,
+      "fp16": 0.618,
+      "quant_accuracy": 0.54,
+      "discordant": [
+        54,
+        15
+      ],
+      "exact_p": 2.612848003590018e-06
+    },
+    {
+      "model": "phi3.5-mini",
+      "k": 8,
+      "quant": "int8",
+      "n": 500,
+      "fp16": 0.618,
+      "quant_accuracy": 0.576,
+      "discordant": [
+        35,
+        14
+      ],
+      "exact_p": 0.003801654409748778
+    }
+  ]
+}

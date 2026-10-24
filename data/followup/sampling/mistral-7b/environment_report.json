@@ -1,0 +1,10 @@
+{
+  "python": "3.13.11 (main, Feb  3 2026, 03:08:54) [GCC 14.2.0]",
+  "platform": "linux",
+  "torch": "2.14.1+cu130",
+  "transformers": "5.20.2",
+  "bitsandbytes": "0.50.2",
+  "cuda_available": true,
+  "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+  "cuda_runtime": "13.0"
+}

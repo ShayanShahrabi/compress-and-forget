@@ -1,0 +1,13 @@
+{
+  "n_trials": 23075,
+  "n_dup": 637,
+  "n_gold_prior": 46,
+  "dup_by_model_attr": {
+    "mistral-7b/mood": 141,
+    "phi3.5-mini/mood": 126,
+    "qwen2.5-7b/mood": 257,
+    "qwen2.5-7b/occupation": 113
+  },
+  "seeds_int4_below_fp16": 15,
+  "n_seed_comparisons": 15
+}

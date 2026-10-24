@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-title: "Compress and Forget: bitsandbytes Quantization Amplifies Proactive Interference in LLMs"
+title: "Compress and Forget: Evaluating Quantized LLMs on Interference-Heavy Retrieval"
 message: "If you use this repository, please cite the associated paper."
 type: software
 authors:

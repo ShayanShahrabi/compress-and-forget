@@ -14,3 +14,8 @@ models/
 
 # Local generated outputs
 generated/
+
+# Omitted raw geometry and future probe snapshots (curated manifests stay tracked)
+data/followup/representation/*/geometry_*.csv
+probe_*.npz
+states_*.npz
